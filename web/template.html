@@ -1,0 +1,82 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>TERRA · Live World Atlas</title>
+<style>
+{{CSS}}
+</style></head><body>
+<div id="boot">LOADING ATLAS</div>
+<div id="intro"><div><b>TERRA</b><small>the world, live</small></div></div>
+<div id="globe"></div>
+
+<div id="topbar">
+ <div id="brand" class="glass"><b>TERRA</b><small>Live world atlas · updated {{UPD}}</small></div>
+ <div id="searchwrap">
+  <div id="search" class="glass">
+   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e8eef9" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+   <input id="q" list="cl" placeholder="Search a place, website, or ask “time in Tokyo”…" autocomplete="off" role="combobox" aria-label="Search or ask anything">
+   <kbd>/</kbd><datalist id="cl"></datalist>
+  </div>
+  <div id="askchips">
+   <button class="askchip">time in Tokyo</button><button class="askchip">weather in Lagos</button>
+   <button class="askchip">100 usd to eur</button><button class="askchip">is example.com safe</button>
+   <button class="askchip">plug in Japan</button><button class="askchip">best time to visit Peru</button>
+  </div>
+ </div>
+ <div id="modebar" class="glass">
+  <button id="homeIcon" title="What do you need today?">☰</button>
+  <div class="seg" id="modeSel"><button data-mode="simple" class="on" title="Plain language, calm map">Simple</button><button data-mode="pro" title="Technical layers and details">Pro</button></div>
+ </div>
+</div>
+
+<div id="dock" class="glass">
+ <button id="dockNews" class="dk"><span>📰</span>News</button>
+ <button id="dockLayers" class="dk"><span>🛰️</span>Layers</button>
+</div>
+
+<div id="news" class="glass pop"></div>
+<div id="lensList" hidden></div>
+
+<div id="layers" class="glass pop"><div class="t">Live layers</div>
+ <div class="sw on" data-k="wx"><span><i class="ld" style="--c:#7cc4ff"></i>Weather at capitals<em id="nw"></em></span><i class="tg"></i></div>
+ <div class="sw on" data-k="news"><span><i class="ld" style="--c:#ff6b57"></i>News hotspots<em id="nn"></em></span><i class="tg"></i></div>
+ <div class="sw on" data-k="flags"><span><i class="ld" style="--c:#fff"></i>Capital flags<em id="nc"></em></span><i class="tg"></i></div>
+ <div class="sw" data-k="quakes"><span><i class="ld" style="--c:#ff7a45"></i>Earthquakes<em id="nq"></em></span><i class="tg"></i></div>
+ <div class="sw" data-k="iss"><span><i class="ld" style="--c:#fff"></i>ISS</span><i class="tg"></i></div>
+ <div class="sw pro-only" data-k="hazards"><span><i class="ld" style="--c:#f2c55c"></i>Hazards<em id="nh"></em></span><i class="tg"></i></div>
+ <div class="sw pro-only" data-k="aqi"><span><i class="ld" style="--c:#9be15d"></i>City air quality<em id="na"></em></span><i class="tg"></i></div>
+ <div class="sw pro-only" data-k="aurora"><span><i class="ld" style="--c:#5affa0"></i>Aurora forecast<em id="nar"></em></span><i class="tg"></i></div>
+ <div class="t" style="margin-top:10px">Imagery</div>
+ <div class="seg" id="imgsel"><button data-m="dark" class="on">Dark</button><button data-m="sat">Satellite</button><button data-m="night">Night</button></div>
+ <div class="t">Display &amp; tools</div>
+ <div class="sw on" data-k="spin"><span>Auto-rotate</span><i class="tg"></i></div>
+</div>
+
+<div id="legend" class="glass"><div class="n" id="lgN"></div><div class="bar" id="lgB"></div><div class="r"><span id="lgL"></span><span id="lgH"></span></div></div>
+
+<div id="panel" class="glass" role="dialog" aria-label="Country dossier"></div>
+
+<div id="ptip" class="tip"></div>
+
+<div id="ticker"><div class="lbl">LIVE NEWS</div><div class="trk"><div class="mv" id="mv"></div></div></div>
+
+<div id="footerbar">
+  <span id="freshness">updated {{UPD}}</span>
+  <span id="spaceChip" class="srcchip">space</span>
+  <button id="srcBtn" class="fbtn">Sources &amp; licences</button>
+  <button id="toolBtn" class="fbtn pro-only">🧰 Toolbox</button>
+  <button id="diagBtn" class="fbtn pro-only" title="Diagnostics (also ?debug)">⚙︎</button>
+  <button id="fontDown" class="fbtn" aria-label="Smaller text">A−</button>
+  <button id="fontUp" class="fbtn" aria-label="Bigger text">A+</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2.33.1/dist/globe.gl.min.js"></script>
+<script>
+const D = {{DATA}};
+{{JS}}
+</script>
+<noscript><div style="padding:40px;font:14px Inter,sans-serif;color:#e9eef5">TERRA needs JavaScript for the interactive globe.</div></noscript>
+</body></html>
