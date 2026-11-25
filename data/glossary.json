@@ -1,0 +1,33 @@
+{
+  "description": "Plain-English glossary for technical terms used in the UI (tooltips, §6.11). Max 25 words each.",
+  "as_of": "2026-11-19",
+  "source_url": "https://en.wikipedia.org/wiki/Glossary_of_internet_terms",
+  "verified": true,
+  "records": [
+    {"term": "DNS", "definition": "The internet's phone book: it turns website names into the numbers computers use to find each other."},
+    {"term": "IP address", "definition": "A number that identifies one device or server on the internet, like a postal address."},
+    {"term": "ASN", "definition": "A number identifying one organisation that routes internet traffic — an internet provider, company, or hosting provider."},
+    {"term": "DNSSEC", "definition": "Extra signatures that prove DNS answers really come from the right place and were not tampered with."},
+    {"term": "TTL", "definition": "How long (in seconds) a DNS answer may be reused before asking again."},
+    {"term": "RDAP", "definition": "The modern replacement for WHOIS: who registered a domain name, and when it expires."},
+    {"term": "WHOIS", "definition": "The old lookup service for domain ownership. Largely replaced by RDAP."},
+    {"term": "MX record", "definition": "The DNS entry that says which servers accept this domain's email."},
+    {"term": "SPF", "definition": "A DNS rule listing which servers may send email for a domain — it helps stop forged sender addresses."},
+    {"term": "DMARC", "definition": "A DNS rule telling receiving mail servers what to do when an email fails checks — plus reporting."},
+    {"term": "DKIM", "definition": "A digital signature added to outgoing email so receivers can verify it was not altered."},
+    {"term": "TLS certificate", "definition": "The digital document behind the padlock: it proves a site is who it claims and enables encryption."},
+    {"term": "AQI", "definition": "Air Quality Index — one number summarising how clean or polluted the air is right now."},
+    {"term": "PM2.5", "definition": "Tiny particles in the air small enough to enter the lungs — the main health risk from air pollution."},
+    {"term": "Kp index", "definition": "A 0–9 measure of geomagnetic activity: higher values mean aurora visible farther from the poles."},
+    {"term": "Magnitude", "definition": "An earthquake's size on the logarithmic moment-magnitude scale — one whole number is about 32× more energy."},
+    {"term": "UTC", "definition": "The world's reference time zone, formerly called GMT."},
+    {"term": "ICAO / IATA code", "definition": "Short codes for airports and organisations (IATA: three letters like CDG; ICAO: four like LFPG)."},
+    {"term": "CIDR", "definition": "A compact way to write a block of IP addresses, like 203.0.113.0/24 — the /24 says how many addresses."},
+    {"term": "Reverse DNS (PTR)", "definition": "The lookup that goes the other way: from an IP address back to a host name."},
+    {"term": "HTTP status code", "definition": "The three-digit result of a web request: 200 OK, 404 not found, 500 server error, and so on."},
+    {"term": "HSTS", "definition": "A security header telling browsers to always use the encrypted connection to this site."},
+    {"term": "CORS", "definition": "A browser rule deciding which websites may fetch data from another website's servers."},
+    {"term": "Submarine cable", "definition": "A fibre-optic cable on the sea floor carrying internet traffic between continents."},
+    {"term": "CDN", "definition": "A network of servers worldwide that copies website content closer to visitors so it loads faster."}
+  ]
+}
