@@ -1,0 +1,970 @@
+version: 1
+app: TERRA · Open Atlas
+user_agent: TERRA-OpenAtlas/1.0 (+https://github.com/terra-open-atlas/terra)
+assets:
+  globe_gl:
+    name: globe.gl
+    url: https://cdn.jsdelivr.net/npm/globe.gl@2.33.1/dist/globe.gl.min.js
+    licence: MIT
+    terms_url: https://github.com/vasturiano/globe.gl
+  earth_dark:
+    name: Earth dark texture (three-globe examples)
+    url: https://unpkg.com/three-globe@2.31.0/example/img/earth-dark.jpg
+    licence: MIT (three-globe examples)
+    terms_url: https://github.com/vasturiano/three-globe
+  earth_sat:
+    name: NASA Blue Marble texture
+    url: https://unpkg.com/three-globe@2.31.0/example/img/earth-blue-marble.jpg
+    licence: NASA public domain (via three-globe examples)
+    terms_url: https://github.com/vasturiano/three-globe
+  earth_night:
+    name: Earth night lights texture
+    url: https://unpkg.com/three-globe@2.31.0/example/img/earth-night.jpg
+    licence: NASA public domain (via three-globe examples)
+    terms_url: https://github.com/vasturiano/three-globe
+  earth_bump:
+    name: Earth topology texture
+    url: https://unpkg.com/three-globe@2.31.0/example/img/earth-topology.png
+    licence: MIT (three-globe examples)
+    terms_url: https://github.com/vasturiano/three-globe
+  night_sky:
+    name: Night sky background
+    url: https://unpkg.com/three-globe@2.31.0/example/img/night-sky.png
+    licence: MIT (three-globe examples)
+    terms_url: https://github.com/vasturiano/three-globe
+  countries_geojson:
+    name: Natural Earth 110m admin-0 countries (pinned jsDelivr copy)
+    url: https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@v5.1.2/geojson/ne_110m_admin_0_countries.geojson
+    licence: Public domain (Natural Earth)
+    terms_url: https://www.naturalearthdata.com/
+  countries_geojson_alt:
+    name: Natural Earth 110m countries (globe.gl example copy, fallback)
+    url: https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson
+    licence: Public domain (Natural Earth)
+    terms_url: https://github.com/vasturiano/globe.gl
+  fonts:
+    name: Google Fonts (Inter)
+    url: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+    licence: SIL OFL (fonts), Google Fonts service
+    terms_url: https://fonts.google.com/
+sources:
+  worldbank:
+    name: World Bank indicators
+    url_template: https://api.worldbank.org/v2/country/all/indicator/{code}
+    sample: https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.CD?format=json&mrnev=1&per_page=5
+    where: S
+    ttl_seconds: 86400
+    budget:
+      requests: 30
+      per_seconds: 60
+    attribution: World Bank Open Data — indicator {code}
+    licence: CC BY 4.0
+    terms_url: https://www.worldbank.org/en/about/legal/terms-of-use-for-datasets
+    required: true
+    fallback: null
+    cors_verified: true
+  usgs:
+    name: USGS earthquakes
+    url_template: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{feed}.geojson
+    sample: https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson
+    where: S
+    ttl_seconds: 300
+    budget:
+      requests: 12
+      per_seconds: 60
+    attribution: USGS Earthquake Hazards Program
+    licence: US Government public domain
+    terms_url: https://earthquake.usgs.gov/earthquakes/feed/
+    required: true
+    fallback: null
+    cors_verified: true
+  eonet:
+    name: NASA EONET natural events
+    url_template: https://eonet.gsfc.nasa.gov/api/v3/events
+    sample: https://eonet.gsfc.nasa.gov/api/v3/events?status=open&limit=5
+    where: S
+    ttl_seconds: 600
+    budget:
+      requests: 12
+      per_seconds: 60
+    attribution: NASA Earth Observatory Natural Event Tracker (EONET)
+    licence: US Government public domain
+    terms_url: https://eonet.gsfc.nasa.gov/
+    required: true
+    fallback: null
+    cors_verified: true
+  gdacs:
+    name: GDACS major disaster alerts
+    url_template: https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH
+    sample: https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=EQ,TC,FL,VO,DR,WF&alertlevels=Orange,Red
+    where: S
+    ttl_seconds: 900
+    budget:
+      requests: 12
+      per_seconds: 60
+    attribution: GDACS (Global Disaster Alert and Coordination System)
+    licence: free for humanitarian / information use
+    terms_url: https://www.gdacs.org/
+    required: false
+    fallback: null
+    cors_verified: true
+  openmeteo:
+    name: Open-Meteo weather & forecast
+    url_template: https://api.open-meteo.com/v1/forecast
+    sample: https://api.open-meteo.com/v1/forecast?latitude=48.85&longitude=2.35&current=temperature_2m,weather_code
+    where: B
+    ttl_seconds: 900
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: 'Open-Meteo (weather data: national weather services)'
+    licence: CC BY 4.0 — free API is for non-commercial use
+    terms_url: https://open-meteo.com/en/terms
+    required: true
+    fallback: null
+    cors_verified: true
+  openmeteo_aq:
+    name: Open-Meteo air quality
+    url_template: https://air-quality-api.open-meteo.com/v1/air-quality
+    sample: https://air-quality-api.open-meteo.com/v1/air-quality?latitude=48.85&longitude=2.35&current=european_aqi
+    where: B
+    ttl_seconds: 1800
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Open-Meteo Air Quality (CAMS / Copernicus)
+    licence: CC BY 4.0 — free API is for non-commercial use
+    terms_url: https://open-meteo.com/en/terms
+    required: true
+    fallback: null
+    cors_verified: true
+  openmeteo_elevation:
+    name: Open-Meteo elevation
+    url_template: https://api.open-meteo.com/v1/elevation
+    sample: https://api.open-meteo.com/v1/elevation?latitude=48.8584&longitude=2.2945
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Open-Meteo (Copernicus DEM)
+    licence: CC BY 4.0
+    terms_url: https://open-meteo.com/en/docs/elevation-api
+    required: false
+    fallback: null
+    cors_verified: true
+  openmeteo_archive:
+    name: Open-Meteo historical archive (climate normals)
+    url_template: https://archive-api.open-meteo.com/v1/archive
+    sample: https://archive-api.open-meteo.com/v1/archive?latitude=48.85&longitude=2.35&start_date=2024-01-01&end_date=2024-01-31&daily=temperature_2m_mean,precipitation_sum&timezone=auto
+    where: B
+    ttl_seconds: 2592000
+    budget:
+      requests: 5
+      per_seconds: 60
+    attribution: Open-Meteo historical archive (ERA5)
+    licence: CC BY 4.0 — free API is for non-commercial use
+    terms_url: https://open-meteo.com/en/docs/historical-weather-api
+    required: false
+    fallback: null
+    cors_verified: true
+  restcountries:
+    name: REST Countries
+    url_template: https://restcountries.com/v3.1/alpha/{cca3}
+    sample: https://restcountries.com/v3.1/alpha/FRA?fields=name,flags,capital,capitalInfo,population,area,languages,currencies,region,subregion,cca2
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 20
+      per_seconds: 60
+    attribution: REST Countries
+    licence: public API, fair use
+    terms_url: https://restcountries.com/
+    required: false
+    fallback: null
+    cors_verified: true
+    deprecated: true
+    note: 'DEPRECATED 2026-11-19: restcountries.com v3.1 redirects to v5 which requires
+      an API key (constraint C1) — replaced by countries_data (mledoze/countries,
+      MIT) + flagcdn + Wikidata SPARQL + World Bank. Kept for the Sources panel only.'
+  restcountries_all:
+    name: REST Countries (all, embedded at start-up)
+    url_template: https://restcountries.com/v3.1/all
+    sample: https://restcountries.com/v3.1/all?fields=name,cca2,cca3,capital
+    where: S
+    ttl_seconds: 86400
+    budget:
+      requests: 4
+      per_seconds: 3600
+    attribution: REST Countries — embedded (subset of fields) in the page payload
+    licence: public API, fair use
+    terms_url: https://restcountries.com/
+    required: false
+    fallback: null
+    cors_verified: null
+    deprecated: true
+    note: 'DEPRECATED 2026-11-19: restcountries.com v3.1 redirects to v5 which requires
+      an API key (constraint C1) — replaced by countries_data (mledoze/countries,
+      MIT) + flagcdn + Wikidata SPARQL + World Bank. Kept for the Sources panel only.'
+  wiki_featured:
+    name: Wikipedia featured feed (In the news, most read)
+    url_template: https://api.wikimedia.org/feed/v1/wikipedia/en/featured/{yyyy}/{mm}/{dd}
+    sample: https://api.wikimedia.org/feed/v1/wikipedia/en/featured/2026/11/19
+    where: B
+    ttl_seconds: 600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikipedia — CC BY-SA, Wikimedia Foundation
+    licence: CC BY-SA 4.0 (link to the article when republishing)
+    terms_url: https://api.wikimedia.org/wiki/Feed_API
+    required: false
+    fallback: null
+    cors_verified: true
+  nager:
+    name: Nager.Date public holidays
+    url_template: https://date.nager.at/api/v3/NextPublicHolidays/{cca2}
+    sample: https://date.nager.at/api/v3/NextPublicHolidays/FR
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Nager.Date
+    licence: MIT
+    terms_url: https://date.nager.at/
+    required: false
+    fallback: null
+    cors_verified: true
+  wikipedia:
+    name: Wikipedia article summaries
+    url_template: https://en.wikipedia.org/api/rest_v1/page/summary/{title}
+    sample: https://en.wikipedia.org/api/rest_v1/page/summary/Paris
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikipedia — CC BY-SA, summary by Wikimedia Foundation
+    licence: CC BY-SA 4.0 (link to the article when republishing)
+    terms_url: https://www.mediawiki.org/wiki/API:REST_API
+    required: false
+    fallback: null
+    cors_verified: true
+  wiki_pageviews:
+    name: Wikimedia most-viewed articles
+    url_template: https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/{yyyy}/{mm}/{dd}
+    sample: https://wikimedia.org/api/rest_v1/metrics/pageviews/top/en.wikipedia/all-access/{{-2:%Y}}/{{-2:%m}}/{{-2:%d}}
+    where: S
+    ttl_seconds: 3600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikimedia Pageviews API
+    licence: CC0 (data); article titles belong to their authors
+    terms_url: https://www.mediawiki.org/wiki/Wikimedia_REST_API
+    required: false
+    fallback: null
+    cors_verified: true
+  iss:
+    name: ISS live position
+    url_template: https://api.wheretheiss.at/v1/satellites/25544
+    sample: https://api.wheretheiss.at/v1/satellites/25544
+    where: B
+    ttl_seconds: 8
+    budget:
+      requests: 30
+      per_seconds: 60
+    attribution: wheretheiss.at
+    licence: free use, no key
+    terms_url: https://wheretheiss.at/w/developer
+    required: false
+    fallback: null
+    cors_verified: true
+  opensky:
+    name: OpenSky Network live flight states
+    url_template: https://opensky-network.org/api/states/all
+    sample: https://opensky-network.org/api/states/all?lamin=45&lamax=47&lomin=5&lomax=10
+    where: S
+    ttl_seconds: 600
+    budget:
+      requests: 6
+      per_seconds: 600
+    attribution: OpenSky Network (anonymous access)
+    licence: see OpenSky terms — non-commercial, rate limited
+    terms_url: https://opensky-network.org/about/terms-of-use
+    required: false
+    fallback: adsb
+    cors_verified: true
+  adsb:
+    name: adsb.lol flight states (fallback)
+    url_template: https://api.adsb.lol/v2/point/{lat}/{lon}/{radius_nm}
+    sample: https://api.adsb.lol/v2/point/51.5/-0.1/250
+    where: S
+    ttl_seconds: 600
+    budget:
+      requests: 6
+      per_seconds: 600
+    attribution: adsb.lol community ADS-B feed
+    licence: community / open data
+    terms_url: https://api.adsb.lol/docs
+    required: false
+    fallback: null
+    cors_verified: true
+  er_api:
+    name: ExchangeRate-API daily rates
+    url_template: https://open.er-api.com/v6/latest/{base}
+    sample: https://open.er-api.com/v6/latest/USD
+    where: S
+    ttl_seconds: 86400
+    budget:
+      requests: 4
+      per_seconds: 3600
+    attribution: ExchangeRate-API (open endpoint)
+    licence: free open endpoint — attribution appreciated
+    terms_url: https://www.exchangerate-api.com/terms
+    required: true
+    fallback: null
+    cors_verified: true
+  geocode:
+    name: Open-Meteo geocoding (city search)
+    url_template: https://geocoding-api.open-meteo.com/v1/search
+    sample: https://geocoding-api.open-meteo.com/v1/search?name=Paris&count=3&language=en&format=json
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 10
+    attribution: Open-Meteo geocoding (OpenStreetMap / GeoNames-derived)
+    licence: CC BY 4.0 / ODbL-derived
+    terms_url: https://open-meteo.com/en/docs/geocoding-api
+    required: true
+    fallback: photon
+    cors_verified: true
+  photon:
+    name: Photon place search (OpenStreetMap)
+    url_template: https://photon.komoot.io/api/
+    sample: https://photon.komoot.io/api/?q=Paris&limit=3
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 10
+    attribution: Photon by Komoot — © OpenStreetMap contributors
+    licence: ODbL (data)
+    terms_url: https://photon.komoot.io/
+    required: false
+    fallback: null
+    cors_verified: true
+  photon_reverse:
+    name: Photon reverse geocoding
+    url_template: https://photon.komoot.io/api/reverse
+    sample: https://photon.komoot.io/reverse?lat=48.8584&lon=2.2945
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 10
+    attribution: Photon by Komoot — © OpenStreetMap contributors
+    licence: ODbL (data)
+    terms_url: https://photon.komoot.io/
+    required: false
+    fallback: nominatim
+    cors_verified: true
+  nominatim:
+    name: Nominatim reverse geocoding (fallback)
+    url_template: https://nominatim.openstreetmap.org/reverse
+    sample: https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=48.8584&lon=2.2945
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 1
+      per_seconds: 2
+    attribution: Nominatim / OpenStreetMap — © OpenStreetMap contributors
+    licence: ODbL (data)
+    terms_url: https://operations.osmfoundation.org/policies/nominatim/
+    required: false
+    fallback: null
+    cors_verified: true
+  wikidata:
+    name: Wikidata structured facts
+    url_template: https://www.wikidata.org/w/api.php
+    sample: https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q90&format=json&origin=*
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikidata
+    licence: CC0
+    terms_url: https://www.wikidata.org/wiki/Wikidata:Introduction
+    required: false
+    fallback: null
+    cors_verified: true
+  wiki_geo:
+    name: Wikipedia geo search (nearby landmarks)
+    url_template: https://en.wikipedia.org/w/api.php
+    sample: https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gscoord=48.8584|2.2945&gsradius=10000&gslimit=5&format=json&origin=*
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikipedia — CC BY-SA
+    licence: CC BY-SA 4.0
+    terms_url: https://www.mediawiki.org/wiki/API:Main_page
+    required: false
+    fallback: null
+    cors_verified: true
+  onthisday:
+    name: Wikimedia "On this day"
+    url_template: https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/{mm}/{dd}
+    sample: https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/{{-1:%m}}/{{-1:%d}}
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikimedia Foundation — On this day
+    licence: CC BY-SA (linked content)
+    terms_url: https://www.mediawiki.org/wiki/API:Wikimedia_Feed_API
+    required: false
+    fallback: null
+    cors_verified: true
+  wiki_featured:
+    name: Wikimedia featured article & picture of the day
+    url_template: https://api.wikimedia.org/feed/v1/wikipedia/en/featured/{yyyy}/{mm}/{dd}
+    sample: https://api.wikimedia.org/feed/v1/wikipedia/en/featured/2024/07/20
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Wikimedia Foundation — featured content
+    licence: CC BY-SA (content); images carry individual licences
+    terms_url: https://www.mediawiki.org/wiki/API:Wikimedia_Feed_API
+    required: false
+    fallback: null
+    cors_verified: true
+  flags:
+    name: flagcdn flag images
+    url_template: https://flagcdn.com/w320/{cca2}.png
+    sample: https://flagcdn.com/w320/fr.png
+    where: B
+    ttl_seconds: 2592000
+    budget:
+      requests: 30
+      per_seconds: 60
+    attribution: 'flagcdn.com (flag designs: public domain / Vexilla Mundi)'
+    licence: public domain flag designs
+    terms_url: https://flagcdn.com/
+    required: false
+    fallback: null
+    cors_verified: true
+  facts:
+    name: Useless Facts (did-you-know garnish)
+    url_template: https://uselessfacts.jsph.pl/api/v2/facts/today
+    sample: https://uselessfacts.jsph.pl/api/v2/facts/today?language=en
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 5
+      per_seconds: 60
+    attribution: uselessfacts.jsph.pl
+    licence: free API
+    terms_url: https://uselessfacts.jsph.pl/
+    required: false
+    fallback: null
+    cors_verified: true
+  doh_google:
+    name: Google Public DNS (DNS-over-HTTPS)
+    url_template: https://dns.google/resolve
+    sample: https://dns.google/resolve?name=example.com&type=A
+    where: B
+    ttl_seconds: 300
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Google Public DNS
+    licence: free public resolver
+    terms_url: https://developers.google.com/speed/public-dns/docs/dns-json
+    required: false
+    fallback: doh_cloudflare
+    cors_verified: true
+  doh_cloudflare:
+    name: Cloudflare DNS-over-HTTPS
+    url_template: https://cloudflare-dns.com/dns-query
+    sample: https://cloudflare-dns.com/dns-query?name=example.com&type=A
+    where: B
+    ttl_seconds: 300
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Cloudflare 1.1.1.1 DNS
+    licence: free public resolver
+    terms_url: https://developers.cloudflare.com/1.1.1.1/dns-over-https/
+    required: false
+    fallback: doh_google
+    cors_verified: true
+    headers:
+      Accept: application/dns-json
+  doh_quad9:
+    name: Quad9 DNS-over-HTTPS (optional 3rd resolver)
+    url_template: https://dns.quad9.net:5053/dns-query
+    sample: https://dns.quad9.net:5053/dns-query?name=example.com&type=A
+    where: B
+    ttl_seconds: 300
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Quad9
+    licence: free public resolver
+    terms_url: https://quad9.net/service/
+    required: false
+    fallback: null
+    cors_verified: false
+    headers:
+      Accept: application/dns-json
+  rdap_domain:
+    name: RDAP domain registration (WHOIS replacement)
+    url_template: https://rdap.org/domain/{domain}
+    sample: https://rdap.org/domain/example.com
+    where: B
+    ttl_seconds: 21600
+    budget:
+      requests: 6
+      per_seconds: 60
+    attribution: RDAP bootstrap (IANA) + registry RDAP services
+    licence: registry terms; personal data redacted in the UI
+    terms_url: https://about.rdap.org/
+    required: false
+    fallback: null
+    cors_verified: true
+  rdap_ip:
+    name: RDAP IP network record
+    url_template: https://rdap.org/ip/{ip}
+    sample: https://rdap.org/ip/8.8.8.8
+    where: B
+    ttl_seconds: 21600
+    budget:
+      requests: 6
+      per_seconds: 60
+    attribution: RDAP bootstrap (IANA) + registry RDAP services
+    licence: registry terms; personal data redacted in the UI
+    terms_url: https://about.rdap.org/
+    required: false
+    fallback: null
+    cors_verified: true
+  rdap_autnum:
+    name: RDAP ASN record
+    url_template: https://rdap.org/autnum/{asn}
+    sample: https://rdap.org/autnum/13335
+    where: B
+    ttl_seconds: 21600
+    budget:
+      requests: 6
+      per_seconds: 60
+    attribution: RDAP bootstrap (IANA) + registry RDAP services
+    licence: registry terms; personal data redacted in the UI
+    terms_url: https://about.rdap.org/
+    required: false
+    fallback: null
+    cors_verified: true
+  rdap_bootstrap:
+    name: IANA RDAP bootstrap registry
+    url_template: https://data.iana.org/rdap/dns.json
+    sample: https://data.iana.org/rdap/dns.json
+    where: S
+    ttl_seconds: 604800
+    budget:
+      requests: 2
+      per_seconds: 3600
+    attribution: IANA
+    licence: public data
+    terms_url: https://about.rdap.org/
+    required: false
+    fallback: null
+    cors_verified: true
+  ipwho:
+    name: ipwho.is IP geolocation
+    url_template: https://ipwho.is/{ip}
+    sample: https://ipwho.is/8.8.8.8
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: ipwho.is
+    licence: free tier, attribution required
+    terms_url: https://ipwho.is/
+    required: false
+    fallback: geojs
+    cors_verified: true
+  geojs:
+    name: GeoJS IP geolocation (fallback)
+    url_template: https://get.geojs.io/v1/ip/geo/{ip}.json
+    sample: https://get.geojs.io/v1/ip/geo/8.8.8.8.json
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: GeoJS
+    licence: MIT (service)
+    terms_url: https://www.geojs.io/
+    required: false
+    fallback: null
+    cors_verified: true
+  ipify:
+    name: ipify "my public IP"
+    url_template: https://api.ipify.org
+    sample: https://api.ipify.org?format=json
+    where: B
+    ttl_seconds: 300
+    budget:
+      requests: 3
+      per_seconds: 60
+    attribution: ipify
+    licence: free API
+    terms_url: https://www.ipify.org/
+    required: false
+    fallback: geojs_ip
+    cors_verified: true
+    notes: Only called after an explicit 'My connection' click — never on page load
+      (privacy rule C7).
+  geojs_ip:
+    name: GeoJS "my public IP" (fallback)
+    url_template: https://get.geojs.io/v1/ip.json
+    sample: https://get.geojs.io/v1/ip.json
+    where: B
+    ttl_seconds: 300
+    budget:
+      requests: 3
+      per_seconds: 60
+    attribution: GeoJS
+    licence: MIT (service)
+    terms_url: https://www.geojs.io/
+    required: false
+    fallback: null
+    cors_verified: true
+  ripestat:
+    name: RIPEstat network/ASN intelligence
+    url_template: https://stat.ripe.net/data/{dataset}/data.json
+    sample: https://stat.ripe.net/data/prefix-overview/data.json?resource=8.8.8.8&sourceapp=terra-open-atlas
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: RIPE NCC RIPEstat
+    licence: RIPE NCC terms; data from the global RIR system
+    terms_url: https://stat.ripe.net/docs/data_api
+    required: false
+    fallback: null
+    cors_verified: true
+  ioda:
+    name: IODA internet outage signals (optional)
+    url_template: https://api.ioda.inetintelligence.cc/v2/signals/raw/country/geo/{iso3}
+    sample: https://api.ioda.inetintelligence.cc/v2/signals/raw/country/geo/USA?from=1700000000&until=1700086400
+    where: B
+    ttl_seconds: 900
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: IODA (Georgia Tech / Center for Applied Internet Data Analysis)
+    licence: research / open data
+    terms_url: https://ioda.inetintelligence.cc/
+    required: false
+    fallback: null
+    cors_verified: false
+    notes: Spec §4.4 'verify B/S'. If verification fails, the Internet-outage layer
+      is dropped, not faked.
+  crtsh:
+    name: crt.sh certificate transparency (subdomains)
+    url_template: https://crt.sh/
+    sample: https://crt.sh/?q=%25.example.com&output=json
+    where: S
+    ttl_seconds: 21600
+    budget:
+      requests: 2
+      per_seconds: 120
+    attribution: crt.sh (Sectigo certificate transparency logs)
+    licence: public CT data; slow and flaky — 10 s timeout
+    terms_url: https://crt.sh/
+    required: false
+    fallback: null
+    cors_verified: true
+  swpc_kp:
+    name: NOAA SWPC planetary K index
+    url_template: https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json
+    sample: https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json
+    where: B
+    ttl_seconds: 600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: NOAA Space Weather Prediction Center
+    licence: US Government public domain
+    terms_url: https://www.swpc.noaa.gov/
+    required: false
+    fallback: null
+    cors_verified: true
+  swpc_aurora:
+    name: NOAA SWPC aurora forecast (ovation)
+    url_template: https://services.swpc.noaa.gov/json/ovation_aurora_latest.json
+    sample: https://services.swpc.noaa.gov/json/ovation_aurora_latest.json
+    where: B
+    ttl_seconds: 600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: NOAA Space Weather Prediction Center
+    licence: US Government public domain
+    terms_url: https://www.swpc.noaa.gov/
+    required: false
+    fallback: null
+    cors_verified: true
+  launches:
+    name: Launch Library 2 — upcoming rocket launches
+    url_template: https://ll.thespacedevs.com/2.2.0/launch/upcoming/
+    sample: https://ll.thespacedevs.com/2.2.0/launch/upcoming/?limit=3&mode=list
+    where: S
+    ttl_seconds: 1800
+    budget:
+      requests: 4
+      per_seconds: 3600
+    attribution: The Space Devs — Launch Library 2
+    licence: free tier, attribution required
+    terms_url: https://thespacedevs.com/llapi
+    required: false
+    fallback: null
+    cors_verified: true
+  gibs:
+    name: NASA GIBS daily satellite imagery tiles
+    url_template: https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/{date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg
+    sample: https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_CorrectedReflectance_TrueColor/default/2024-07-20/GoogleMapsCompatible_Level9/5/12/15.jpg
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 60
+      per_seconds: 60
+    attribution: NASA EOSDIS GIBS (VIIRS_SNPP_CorrectedReflectance_TrueColor)
+    licence: NASA public domain
+    terms_url: https://www.earthdata.nasa.gov/eosdis/science-system-description/eosdis-components/gibs
+    required: false
+    fallback: null
+    cors_verified: true
+  rainviewer:
+    name: RainViewer precipitation radar tiles
+    url_template: https://api.rainviewer.com/public/weather-maps.json
+    sample: https://api.rainviewer.com/public/weather-maps.json
+    where: B
+    ttl_seconds: 600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: RainViewer
+    licence: free for fair use with attribution
+    terms_url: https://www.rainviewer.com/api.html
+    required: false
+    fallback: null
+    cors_verified: true
+  who_gho:
+    name: WHO Global Health Observatory (optional health lens)
+    url_template: https://ghoapi.azureedge.net/api/{indicator}
+    sample: https://ghoapi.azureedge.net/api/Indicator?$top=1
+    where: B
+    ttl_seconds: 86400
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: WHO Global Health Observatory
+    licence: WHO open data / CC BY 4.0 IGO (see terms)
+    terms_url: https://www.who.int/data/gho
+    required: false
+    fallback: null
+    cors_verified: false
+  news_rss:
+    name: World headlines (publisher RSS feeds)
+    url_template: https://feeds.bbci.co.uk/news/world/rss.xml
+    sample: https://feeds.bbci.co.uk/news/world/rss.xml
+    where: S
+    ttl_seconds: 900
+    budget:
+      requests: 1
+      per_seconds: 900
+    attribution: Headlines belong to their publishers — title + link only
+    licence: publisher feeds are commonly non-commercial; store title/link/time only
+    terms_url: https://www.bbc.co.uk/usingthebbc/rss
+    required: true
+    fallback: null
+    cors_verified: true
+    feeds:
+      bbc:
+        name: BBC
+        region: Europe
+        url: https://feeds.bbci.co.uk/news/world/rss.xml
+      aljazeera:
+        name: Al Jazeera
+        region: Middle East
+        url: https://www.aljazeera.com/xml/rss/all.xml
+      dw:
+        name: DW
+        region: Europe
+        url: https://rss.dw.com/rdf/rss-en-all
+      france24:
+        name: France 24
+        region: Europe
+        url: https://www.france24.com/en/rss
+      npr:
+        name: NPR
+        region: North America
+        url: https://feeds.npr.org/1004/rss.xml
+      cna:
+        name: CNA
+        region: Asia
+        url: https://www.channelnewsasia.com/api/v1/rss-outbound-feed?category=world
+        required: false
+      africanews:
+        name: Africanews
+        region: Africa
+        url: https://www.africanews.com/feed
+        required: false
+      telesur:
+        name: teleSUR English
+        region: Latin America
+        url: https://www.telesurenglish.net/rss/
+        required: false
+      guardian:
+        name: The Guardian
+        region: Europe
+        url: https://www.theguardian.com/world/rss
+        required: false
+      abc_au:
+        name: ABC News (AU)
+        region: Oceania
+        url: https://www.abc.net.au/news/feed/2942460/rss.xml
+        required: false
+      euronews:
+        name: Euronews
+        region: Europe
+        url: https://www.euronews.com/rss?format=mrss&level=theme&name=news
+        required: false
+      thehindu:
+        name: The Hindu
+        region: Asia
+        url: https://www.thehindu.com/news/international/feeder/default.rss
+        required: false
+      scmp:
+        name: SCMP
+        region: Asia
+        url: https://www.scmp.com/rss/91/feed
+        required: false
+  gdelt:
+    name: GDELT headlines about a place/topic
+    url_template: https://api.gdeltproject.org/api/v2/doc/doc
+    sample: https://api.gdeltproject.org/api/v2/doc/doc?query=world&mode=artlist&maxrecords=3&format=json&sort=datedesc&timespan=24h
+    where: B
+    ttl_seconds: 900
+    budget:
+      requests: 12
+      per_seconds: 300
+    attribution: GDELT Project
+    licence: free for research / non-commercial; headline + link only
+    terms_url: https://www.gdeltproject.org/
+    required: false
+    fallback: null
+    cors_verified: false
+  hn:
+    name: Hacker News top stories (Pro mode)
+    url_template: https://hacker-news.firebaseio.com/v0/topstories.json
+    sample: https://hacker-news.firebaseio.com/v0/topstories.json
+    where: B
+    ttl_seconds: 600
+    budget:
+      requests: 10
+      per_seconds: 60
+    attribution: Hacker News / Y Combinator
+    licence: public Firebase API
+    terms_url: https://github.com/HackerNews/API
+    required: false
+    fallback: null
+    cors_verified: true
+  mymemory:
+    name: MyMemory machine translation (phrasebook)
+    url_template: https://api.mymemory.translated.net/get
+    sample: https://api.mymemory.translated.net/get?q=hello&langpair=en|fr
+    where: B
+    ttl_seconds: 2592000
+    budget:
+      requests: 5
+      per_seconds: 60
+    attribution: MyMemory (translated by PROMT / Microsoft — 'machine translation')
+    licence: free anonymous quota is tiny; custom-text translation is off by default
+      and must disclose the third-party transfer
+    terms_url: https://mymemory.translated.net/doc/spec.php
+    required: false
+    fallback: null
+    cors_verified: true
+  bigmac:
+    name: Economist Big Mac index (purchasing power)
+    url_template: https://raw.githubusercontent.com/TheEconomist/big-mac-data/master/output-data/big-mac-full-index.csv
+    sample: https://raw.githubusercontent.com/TheEconomist/big-mac-data/master/output-data/big-mac-full-index.csv
+    where: S
+    ttl_seconds: 604800
+    budget:
+      requests: 2
+      per_seconds: 3600
+    attribution: The Economist Big Mac index (data on GitHub)
+    licence: see repository licence — verify before publishing
+    terms_url: https://github.com/TheEconomist/big-mac-data
+    required: false
+    fallback: null
+    cors_verified: true
+  countries_data:
+    name: mledoze/countries dataset (embedded at start-up)
+    url_template: https://raw.githubusercontent.com/mledoze/countries/master/countries.json
+    sample: https://raw.githubusercontent.com/mledoze/countries/master/countries.json
+    where: S
+    ttl_seconds: 604800
+    budget:
+      requests: 4
+      per_seconds: 3600
+    attribution: mledoze/countries (MIT) — the dataset formerly served by REST Countries
+    licence: MIT
+    terms_url: https://github.com/mledoze/countries
+    required: true
+    fallback: null
+    cors_verified: null
+  wikidata_sparql:
+    name: Wikidata Query Service (bulk facts, e.g. driving side)
+    url_template: https://query.wikidata.org/sparql
+    sample: https://query.wikidata.org/sparql?format=json&query=SELECT%20%3Fiso%20%3Fside%20WHERE%20%7B%20%3Fc%20wdt%3AP297%20%3Fiso%3B%20wdt%3AP1622%20%3Fside.%20%7D%20LIMIT%205
+    where: S
+    ttl_seconds: 604800
+    budget:
+      requests: 5
+      per_seconds: 60
+    attribution: Wikidata (CC0) via the Wikidata Query Service
+    licence: CC0
+    terms_url: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service
+    required: false
+    fallback: null
+    cors_verified: null
+server_tools:
+  rdns:
+    name: Reverse DNS (PTR)
+    how: socket.gethostbyaddr / DoH PTR
+    guard: valid public IP only; private/reserved ranges refused
+  tls_cert:
+    name: TLS certificate probe
+    how: ssl.create_default_context + socket on port 443
+    guard: SSRF guard; port 443 only; 5 s timeout
+  headers_probe:
+    name: HTTP header probe
+    how: requests.head/get allow_redirects, stream=True, no body read
+    guard: SSRF guard re-checked after every redirect; http/https only; max 5 redirects
+  email_dns:
+    name: Email DNS health (SPF/DMARC/DKIM/MTA-STS)
+    how: pure DNS via DoH results — no mail is ever sent
+    guard: DNS lookups only

@@ -1,0 +1,5 @@
+streamlit>=1.35
+requests
+pyyaml
+defusedxml
+dnspython>=2.4
